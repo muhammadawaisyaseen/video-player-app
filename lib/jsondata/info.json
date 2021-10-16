@@ -1,0 +1,18 @@
+[
+    {
+        "title":"Chest",
+        "img":"lib/myassets/chest.png"
+    },
+    {
+        "title":"Arms",
+        "img":"lib/myassets/hand.png"
+    },
+    {
+        "title":"Legs",
+        "img":"lib/myassets/legs.jpg"
+    },
+    {
+        "title":"Table",
+        "img":"lib/myassets/table123.png"
+    }
+]
