@@ -17,14 +17,14 @@ class _HomePageState extends State<HomePage> {
   @override
   List info = [];
 
-  _initData() async{
-   await DefaultAssetBundle.of(context)
+  _initData() async {
+    await DefaultAssetBundle.of(context)
         .loadString("lib/jsondata/info.json")
         .then((value) {
       setState(() {
         info = json.decode(value);
       });
-      //print(info[0]["img"]);
+      print(info[0]["img"]);
     });
   }
 
