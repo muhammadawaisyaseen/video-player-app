@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         info = json.decode(value);
       });
-      print(info[0]["img"]);
+      //print(info[0]["img"]);
     });
   }
 
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _initData();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: const [
-                    Text("Traning",
+                    Text("Tranings",
                         style: TextStyle(fontSize: 30, color: Colors.black)),
                     //Expanded(child: Container()),
                     Spacer(),
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                         size: 20, color: Colors.black),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Next Workout hy",
+                            "Next Workout",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                           SizedBox(
