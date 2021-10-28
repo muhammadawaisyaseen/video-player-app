@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 
 class VideoInfo extends StatefulWidget {
@@ -126,6 +127,34 @@ class _VideoInfoState extends State<VideoInfo> {
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.only(topRight: Radius.circular(70))),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          Text(
+                            "Circuit 1 : Legs Toning",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Spacer(),
+                          Icon(Icons.loop, size: 30, color: Colors.blueAccent),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("3 sets",
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                              )),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             )
           ],
