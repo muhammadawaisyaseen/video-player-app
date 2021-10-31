@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         info = json.decode(value);
       });
-      //print(info[0]["img"]);
+      
     });
   }
 

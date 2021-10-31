@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 
@@ -9,6 +11,25 @@ class VideoInfo extends StatefulWidget {
 }
 
 class _VideoInfoState extends State<VideoInfo> {
+    List info = [];
+
+  _initData() async {
+    await DefaultAssetBundle.of(context)
+        .loadString("lib/jsondata/videoinfo.json")
+        .then((value) {
+      setState(() {
+        info = json.decode(value);
+      });
+      
+    });
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    _initData();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
