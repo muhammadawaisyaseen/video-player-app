@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
-
+import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+
+import 'package:video_player_app/video_info.dart';
 
 class HomePage extends StatefulWidget {
   // const HomePage({Key? key}) : super(key: key);
@@ -24,7 +26,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         info = json.decode(value);
       });
-      
     });
   }
 
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _initData();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,13 +69,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Icon(Icons.arrow_forward_ios,
                         size: 20, color: Colors.black),
+                    //),
                   ],
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Text("Your Program",
                         style: TextStyle(fontSize: 20, color: Colors.black38)),
                     Spacer(),
@@ -83,7 +85,12 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       width: 5,
                     ),
-                    Icon(Icons.arrow_forward, size: 20),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => VideoInfo());
+                      },
+                      child: Icon(Icons.arrow_forward, size: 20),
+                    ),
                   ],
                 ),
                 const SizedBox(

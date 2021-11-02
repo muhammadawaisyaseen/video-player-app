@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:flutter/painting.dart';
+import 'package:get/get.dart';
 
 class VideoInfo extends StatefulWidget {
   const VideoInfo({Key? key}) : super(key: key);
@@ -11,25 +13,26 @@ class VideoInfo extends StatefulWidget {
 }
 
 class _VideoInfoState extends State<VideoInfo> {
-    List info = [];
+  List videoinfo = [];
+
+  get children => null;
 
   _initData() async {
     await DefaultAssetBundle.of(context)
         .loadString("lib/jsondata/videoinfo.json")
         .then((value) {
       setState(() {
-        info = json.decode(value);
+        videoinfo = json.decode(value);
       });
-      
     });
   }
-  
+
   @override
   void initState() {
     super.initState();
     _initData();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,11 +57,17 @@ class _VideoInfoState extends State<VideoInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      children: const [
-                        Icon(Icons.arrow_back_ios,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: const Icon(Icons.arrow_back_ios,
+                              size: 20, color: Colors.white),
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.info_outline,
                             size: 20, color: Colors.white),
-                        Spacer(),
-                        Icon(Icons.info_outline, size: 20, color: Colors.white),
                       ],
                     ),
                     const SizedBox(
@@ -172,7 +181,70 @@ class _VideoInfoState extends State<VideoInfo> {
                                 fontSize: 15,
                               )),
                         ],
-                      )
+                      ),
+                      Expanded(
+                          // flex: 14,
+
+                          child: ListView.builder(
+                        itemCount: videoinfo.length,
+                        itemBuilder: (_, int index) {
+                          return GestureDetector(
+                              onTap: () {
+                                //debugprint(index.toString());
+                                print("Awais Yaseen");
+                              },
+                              child: Container(
+                                //padding: EdgeInsets.all(40),
+                                height: 135,
+                                //width: 200,
+                                //color: Colors.green,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 80,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: AssetImage(
+                                                    videoinfo[index]
+                                                        ["thumbnail"])),
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              videoinfo[index]["title"],
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              videoinfo[index]["time"],
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey[700]),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ));
+                        },
+                      )),
                     ],
                   ),
                 ),
