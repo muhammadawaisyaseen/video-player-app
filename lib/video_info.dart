@@ -239,7 +239,36 @@ class _VideoInfoState extends State<VideoInfo> {
                                           ],
                                         )
                                       ],
-                                    )
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 20,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFeaeefc),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              "15s set",
+                                              style: TextStyle(
+                                                color: Color(0xFF839fed),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                        
+                                    //   ],
+                                    // )
                                   ],
                                 ),
                               ));
