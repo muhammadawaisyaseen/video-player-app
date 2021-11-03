@@ -15,7 +15,7 @@ class VideoInfo extends StatefulWidget {
 class _VideoInfoState extends State<VideoInfo> {
   List videoinfo = [];
 
-  get children => null;
+  //get children => null;
 
   _initData() async {
     await DefaultAssetBundle.of(context)
@@ -261,14 +261,30 @@ class _VideoInfoState extends State<VideoInfo> {
                                               ),
                                             ),
                                           ),
-                                        )
+                                        ),
+                                        Row(
+                                          children: [
+                                            for (int i = 0; i < 90; i++)
+                                              i.isEven
+                                                  ? Container(
+                                                      height: 1,
+                                                      width: 3,
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(
+                                                            0xFF839fed),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(2),
+                                                      ))
+                                                  : Container(
+                                                      width: 3,
+                                                      height: 1,
+                                                      color: Colors.white,
+                                                    )
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                    // Row(
-                                    //   children: [
-                                        
-                                    //   ],
-                                    // )
                                   ],
                                 ),
                               ));
