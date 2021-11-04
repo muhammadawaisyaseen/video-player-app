@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoInfo extends StatefulWidget {
   const VideoInfo({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class VideoInfo extends StatefulWidget {
 
 class _VideoInfoState extends State<VideoInfo> {
   bool _playarea = false;
-
+   VideoPlayerController? _controller;
   List videoinfo = [];
 
   //get children => null;
@@ -33,6 +34,7 @@ class _VideoInfoState extends State<VideoInfo> {
   void initState() {
     super.initState();
     _initData();
+
   }
 
   @override
@@ -163,8 +165,8 @@ class _VideoInfoState extends State<VideoInfo> {
                       ),
                     )
                   : Container(
-                      padding: EdgeInsets.only(top: 50, left: 30),
-                      height: 80,
+                      padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
+                      height: 90,
                       //color: Colors.red,
                       child: Column(
                         children: [
@@ -173,15 +175,22 @@ class _VideoInfoState extends State<VideoInfo> {
                             children: [
                               InkWell(
                                   onTap: () {
-                                    print("Awais press");
+                                    //print("Awais press");
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back_ios,
                                     color: Colors.white,
                                     size: 20,
                                   )),
+                              const Spacer(),
+                              const Icon(
+                                Icons.info_outline,
+                                color: Colors.white,
+                                size: 20,
+                              )
                             ],
                           ),
+                          _playview(context),
                         ],
                       ),
                     ),
@@ -226,6 +235,8 @@ class _VideoInfoState extends State<VideoInfo> {
                           itemBuilder: (_, int index) {
                             return GestureDetector(
                               onTap: () {
+                                // initilization of video link or get the video
+                                _ontapvideo(index);
                                 //debugprint(index.toString());
                                 //print("Awais Yaseen");
                                 setState(() {
@@ -336,5 +347,34 @@ class _VideoInfoState extends State<VideoInfo> {
         ],
       ),
     );
+  }
+
+// This is another function
+  Widget _playview(BuildContext context) {
+    final controller = _controller;
+    if (controller != null && controller.value.initialized) {
+      return Container(
+        height: 300,
+        width: 300,
+        child: VideoPlayer(controller),
+      );
+    } else {
+      return Text("Being initilized please wait");
+    }
+  }
+
+  // Following fun use to get the video with index
+  _ontapvideo(int index) {
+    // controller is local variable & _controller is a global variable
+
+    final controller =
+        VideoPlayerController.network(videoinfo[index]["videoUrl"]);
+    _controller = controller;
+    setState(() {});
+    controller
+      ..initialize().then((_) {
+        controller.play();
+        setState(() {});
+      });
   }
 }
