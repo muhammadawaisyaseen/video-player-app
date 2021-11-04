@@ -15,7 +15,7 @@ class VideoInfo extends StatefulWidget {
 
 class _VideoInfoState extends State<VideoInfo> {
   bool _playarea = false;
-   VideoPlayerController? _controller;
+  VideoPlayerController? _controller;
   List videoinfo = [];
 
   //get children => null;
@@ -34,7 +34,6 @@ class _VideoInfoState extends State<VideoInfo> {
   void initState() {
     super.initState();
     _initData();
-
   }
 
   @override
@@ -165,30 +164,38 @@ class _VideoInfoState extends State<VideoInfo> {
                       ),
                     )
                   : Container(
-                      padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
-                      height: 90,
+                      // padding:
+                      //     const EdgeInsets.only(top: 50, left: 30, right: 30),
+                      // height: 271,
                       //color: Colors.red,
                       child: Column(
                         children: [
                           //child:
-                          Row(
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    //print("Awais press");
-                                  },
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Colors.white,
-                                    size: 20,
-                                  )),
-                              const Spacer(),
-                              const Icon(
-                                Icons.info_outline,
-                                color: Colors.white,
-                                size: 20,
-                              )
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 30, right: 30),
+                            child: Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      //print("Awais press");
+                                    },
+                                    child: const Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.white,
+                                      size: 20,
+                                    )),
+                                const Spacer(),
+                                const Icon(
+                                  Icons.info_outline,
+                                  color: Colors.white,
+                                  size: 20,
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           _playview(context),
                         ],
@@ -237,8 +244,7 @@ class _VideoInfoState extends State<VideoInfo> {
                               onTap: () {
                                 // initilization of video link or get the video
                                 _ontapvideo(index);
-                                //debugprint(index.toString());
-                                //print("Awais Yaseen");
+
                                 setState(() {
                                   if (_playarea == false) {
                                     _playarea = true;
@@ -351,15 +357,27 @@ class _VideoInfoState extends State<VideoInfo> {
 
 // This is another function
   Widget _playview(BuildContext context) {
-    final controller = _controller;
-    if (controller != null && controller.value.initialized) {
-      return Container(
-        height: 300,
-        width: 300,
-        child: VideoPlayer(controller),
+    final controllerInFunction = _controller;
+    if (controllerInFunction != null &&
+        controllerInFunction.value.isInitialized) {
+      return AspectRatio(
+        // height: 300,
+        // width: 300,
+        aspectRatio: 16 / 9,
+        child: VideoPlayer(controllerInFunction),
       );
     } else {
-      return Text("Being initilized please wait");
+      return AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Center(
+            child: Text(
+              "Preparing.......",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ));
     }
   }
 
@@ -367,14 +385,16 @@ class _VideoInfoState extends State<VideoInfo> {
   _ontapvideo(int index) {
     // controller is local variable & _controller is a global variable
 
-    final controller =
+    final controllerTemp =
         VideoPlayerController.network(videoinfo[index]["videoUrl"]);
-    _controller = controller;
-    setState(() {});
-    controller
-      ..initialize().then((_) {
-        controller.play();
-        setState(() {});
+    setState(() {
+      _controller = controllerTemp;
+    });
+    _controller!.initialize().then((value) {
+      
+      setState(() {
+        _controller!.play();
       });
+    });
   }
 }
