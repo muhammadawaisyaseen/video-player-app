@@ -16,6 +16,7 @@ class VideoInfo extends StatefulWidget {
 class _VideoInfoState extends State<VideoInfo> {
   bool _playarea = false;
   VideoPlayerController? _controller;
+  bool _isplaying = false;
   List videoinfo = [];
 
   //get children => null;
@@ -194,10 +195,12 @@ class _VideoInfoState extends State<VideoInfo> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           _playview(context),
+                          // contro; view in tutorial
+                          _controlvideobutton(context),
                         ],
                       ),
                     ),
@@ -244,7 +247,6 @@ class _VideoInfoState extends State<VideoInfo> {
                               onTap: () {
                                 // initilization of video link or get the video
                                 _ontapvideo(index);
-
                                 setState(() {
                                   if (_playarea == false) {
                                     _playarea = true;
@@ -367,7 +369,7 @@ class _VideoInfoState extends State<VideoInfo> {
         child: VideoPlayer(controllerInFunction),
       );
     } else {
-      return AspectRatio(
+      return const AspectRatio(
           aspectRatio: 16 / 9,
           child: Center(
             child: Text(
@@ -381,20 +383,91 @@ class _VideoInfoState extends State<VideoInfo> {
     }
   }
 
+// This fun is use in _ontapvideo() for addlistener()
+  void _oncontrollerupdate() async {
+    final controller = _controller;
+    if (controller == null) {
+      print("controller is null");
+      return;
+    }
+    if (!controller.value.isInitialized) {
+      // ignore: avoid_print
+      print("controller can't be initialize");
+      return;
+    }
+    final playing = controller.value.isPlaying;
+    _isplaying = playing;
+  }
+
   // Following fun use to get the video with index
   _ontapvideo(int index) {
-    // controller is local variable & _controller is a global variable
-
-    final controllerTemp =
+    //controller is local _controller is a global variable
+    final controller =
         VideoPlayerController.network(videoinfo[index]["videoUrl"]);
     setState(() {
-      _controller = controllerTemp;
+      _controller = controller;
     });
     _controller!.initialize().then((value) {
-      
+      controller.addListener(_oncontrollerupdate);
       setState(() {
         _controller!.play();
       });
     });
+  }
+
+  // control view in tutorial
+  Widget _controlvideobutton(BuildContext context) {
+    return Container(
+      height: 80,
+      width: MediaQuery.of(context).size.width,
+      color: Color.fromRGBO(0, 128, 255, 0.1),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FlatButton(
+              onPressed: () async {},
+              child: const Icon(
+                Icons.fast_rewind,
+                size: 36,
+                color: Colors.white,
+              )),
+          //
+          FlatButton(
+              onPressed: () async {
+                if (_isplaying) {
+                  _controller?.pause();
+                  setState(() {
+                    _isplaying = false;
+                  });
+                } else {
+                  _controller?.play();
+                  setState(() {
+                    _isplaying = true;
+                  });
+                }
+              },
+              child: _isplaying
+                  ? Icon(
+                      Icons.pause,
+                      size: 36,
+                      color: Colors.white,
+                    )
+                  : Icon(
+                      Icons.play_arrow,
+                      size: 36,
+                      color: Colors.white,
+                    )),
+          //
+          FlatButton(
+              onPressed: () async {},
+              child: const Icon(
+                Icons.fast_forward,
+                size: 36,
+                color: Colors.white,
+              ))
+        ],
+      ),
+    );
   }
 }
