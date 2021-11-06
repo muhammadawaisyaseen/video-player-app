@@ -396,6 +396,7 @@ class _VideoInfoState extends State<VideoInfo> {
       return;
     }
     final playing = controller.value.isPlaying;
+    //print(playing);
     _isplaying = playing;
   }
 
@@ -411,6 +412,7 @@ class _VideoInfoState extends State<VideoInfo> {
       controller.addListener(_oncontrollerupdate);
       setState(() {
         _controller!.play();
+        // _isplaying = true;
       });
     });
   }
@@ -435,12 +437,12 @@ class _VideoInfoState extends State<VideoInfo> {
           //
           FlatButton(
               onPressed: () async {
-                if (_isplaying) {
+                if (_isplaying == true) {
                   _controller?.pause();
                   setState(() {
                     _isplaying = false;
                   });
-                } else {
+                } else if (_isplaying == false) {
                   _controller?.play();
                   setState(() {
                     _isplaying = true;
@@ -448,12 +450,12 @@ class _VideoInfoState extends State<VideoInfo> {
                 }
               },
               child: _isplaying
-                  ? Icon(
+                  ? const Icon(
                       Icons.pause,
                       size: 36,
                       color: Colors.white,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.play_arrow,
                       size: 36,
                       color: Colors.white,
