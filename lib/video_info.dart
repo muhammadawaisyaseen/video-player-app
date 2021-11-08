@@ -190,14 +190,15 @@ class _VideoInfoState extends State<VideoInfo> {
                             child: Row(
                               children: [
                                 InkWell(
-                                    onTap: () {
-                                      //print("Awais press");
-                                    },
-                                    child: const Icon(
-                                      Icons.arrow_back_ios,
-                                      color: Colors.white,
-                                      size: 20,
-                                    )),
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                  child: const Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
                                 const Spacer(),
                                 const Icon(
                                   Icons.info_outline,
@@ -468,7 +469,21 @@ class _VideoInfoState extends State<VideoInfo> {
                 if (index >= 0 && videoinfo.length >= 0) {
                   _ontapvideo(index);
                 } else {
-                  Get.snackbar("Video", "No more video to play");
+                  Get.snackbar(
+                    "Video",
+                    "",
+                    icon: const Icon(Icons.face, size: 30, color: Colors.white),
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: const Color.fromRGBO(0, 128, 255, 0.9),
+                    colorText: Colors.white,
+                    messageText: const Text(
+                      "No more video to play",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
                 }
               },
               child: const Icon(
@@ -506,10 +521,24 @@ class _VideoInfoState extends State<VideoInfo> {
           FlatButton(
               onPressed: () async {
                 final index = _isplayingindex + 1;
-                if (index <= videoinfo.length-1) {
+                if (index <= videoinfo.length - 1) {
                   _ontapvideo(index);
                 } else {
-                  Get.snackbar("Video", "No more video to play");
+                  Get.snackbar(
+                    "Video",
+                    "",
+                    icon: const Icon(Icons.face, size: 30, color: Colors.white),
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: const Color.fromRGBO(0, 128, 255, 0.9),
+                    colorText: Colors.white,
+                    messageText: const Text(
+                      "No more video to play",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
                 }
               },
               child: const Icon(
