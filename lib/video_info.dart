@@ -18,6 +18,7 @@ class _VideoInfoState extends State<VideoInfo> {
   VideoPlayerController? _controller;
   bool _isplaying = false;
   bool _disposed = false;
+  int _isplayingindex = -1;
   List videoinfo = [];
 
   //get children => null;
@@ -400,8 +401,12 @@ class _VideoInfoState extends State<VideoInfo> {
     if (_disposed) {
       return;
     }
-    _onupdatecontrollertime = 0;
+    var _onupdatecontrollertime = 0;
     final now = DateTime.now().millisecondsSinceEpoch;
+    if (_onupdatecontrollertime > now) {
+      return;
+    }
+    _onupdatecontrollertime = now + 500;
     final controller = _controller;
     if (controller == null) {
       print("controller is null");
@@ -422,28 +427,32 @@ class _VideoInfoState extends State<VideoInfo> {
     //controller is local _controller is a global variable
     final controller =
         VideoPlayerController.network(videoinfo[index]["videoUrl"]);
+    final oldcontroller = _controller;
     setState(() {
       _controller = controller;
     });
 
-    // when you play next video then previous will become old controller
-    final oldcontroller = _controller;
     if (oldcontroller != null) {
       oldcontroller.removeListener(_oncontrollerupdate);
       oldcontroller.pause();
     }
+
+    // when you play next video then previous will become old controller
+
     _controller!.initialize().then((value) {
       // ? means exist (if old controller exist then dispose it because we want initilization of next video)
+      //print("click huwa hy k ni");
       oldcontroller?.dispose();
+      // (_isplayingindex)index of currently playing video
+      _isplayingindex = index;
       controller.addListener(_oncontrollerupdate);
       setState(() {
         _controller!.play();
-        // _isplaying = true;
       });
     });
   }
 
-  // control view in tutorial
+  // control view
   Widget _controlvideobutton(BuildContext context) {
     return Container(
       height: 80,
@@ -454,7 +463,14 @@ class _VideoInfoState extends State<VideoInfo> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FlatButton(
-              onPressed: () async {},
+              onPressed: () async {
+                final index = _isplayingindex - 1;
+                if (index >= 0 && videoinfo.length >= 0) {
+                  _ontapvideo(index);
+                } else {
+                  Get.snackbar("Video", "No more video to play");
+                }
+              },
               child: const Icon(
                 Icons.fast_rewind,
                 size: 36,
@@ -488,7 +504,14 @@ class _VideoInfoState extends State<VideoInfo> {
                     )),
           //
           FlatButton(
-              onPressed: () async {},
+              onPressed: () async {
+                final index = _isplayingindex + 1;
+                if (index <= videoinfo.length-1) {
+                  _ontapvideo(index);
+                } else {
+                  Get.snackbar("Video", "No more video to play");
+                }
+              },
               child: const Icon(
                 Icons.fast_forward,
                 size: 36,
