@@ -17,6 +17,7 @@ class _VideoInfoState extends State<VideoInfo> {
   bool _playarea = false;
   VideoPlayerController? _controller;
   bool _isplaying = false;
+  bool _disposed = false;
   List videoinfo = [];
 
   //get children => null;
@@ -35,6 +36,16 @@ class _VideoInfoState extends State<VideoInfo> {
   void initState() {
     super.initState();
     _initData();
+  }
+
+  @override
+  void dispose() {
+    // ? means if exist
+    super.dispose();
+    _controller?.pause();
+    _controller?.dispose();
+    _controller = null;
+    _disposed = true;
   }
 
   @override
@@ -384,7 +395,13 @@ class _VideoInfoState extends State<VideoInfo> {
   }
 
 // This fun is use in _ontapvideo() for addlistener()
+  var _onupdatecontrollertime;
   void _oncontrollerupdate() async {
+    if (_disposed) {
+      return;
+    }
+    _onupdatecontrollertime = 0;
+    final now = DateTime.now().millisecondsSinceEpoch;
     final controller = _controller;
     if (controller == null) {
       print("controller is null");
@@ -408,7 +425,16 @@ class _VideoInfoState extends State<VideoInfo> {
     setState(() {
       _controller = controller;
     });
+
+    // when you play next video then previous will become old controller
+    final oldcontroller = _controller;
+    if (oldcontroller != null) {
+      oldcontroller.removeListener(_oncontrollerupdate);
+      oldcontroller.pause();
+    }
     _controller!.initialize().then((value) {
+      // ? means exist (if old controller exist then dispose it because we want initilization of next video)
+      oldcontroller?.dispose();
       controller.addListener(_oncontrollerupdate);
       setState(() {
         _controller!.play();
